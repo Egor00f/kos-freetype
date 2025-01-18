@@ -1,1 +1,0 @@
-fasm kruler.asm kruler

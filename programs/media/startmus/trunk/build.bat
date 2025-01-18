@@ -1,1 +1,0 @@
-fasm startmus.asm startmus

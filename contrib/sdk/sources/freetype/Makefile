@@ -5,7 +5,12 @@ AR = kos32-ar
 LD = kos32-ld
 STRIP = kos32-strip
 
-INSTALLDIR:= /home/autobuild/tools/win32/lib
+ifeq ($(OS),Windows_NT)
+	TOOLCHAIN_PATH=C:/MinGW/msys/1.0/home/autobuild/tools/win32
+else
+	TOOLCHAIN_PATH=/home/autobuild/tools/win32
+endif
+INSTALLDIR:= $(TOOLCHAIN_PATH)/lib
 
 CFLAGS = -U_Win32 -U_WIN32 -U__MINGW32__ -c -O2 -Wall -Winline -fno-ident -fomit-frame-pointer
 
@@ -14,7 +19,7 @@ LDFLAGS+= --out-implib lib$(LIBRARY).dll.a
 
 ARFLAGS = crs
 
-INCLUDES= -I../newlib/libc/include -I./include -I./include/freetype/config 
+INCLUDES= -I$(TOOLCHAIN_PATH)/include -I./include -I./include/freetype/config 
 
 LIBS:=  -ldll -lgcc -lc.dll
 

@@ -1,1 +1,0 @@
-fasm koldbg.asm koldbg
