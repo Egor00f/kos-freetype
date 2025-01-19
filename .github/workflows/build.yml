@@ -1,0 +1,79 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'contrib/**'
+      - 'Makefile'
+      - 'kos-pixman-dev/**'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  static-build:
+    name: Static build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: egor00f/install-kolibrios-toolchain-action@v1.1
+
+    - name: Install newlib
+      run: sudo apt install kos-newlib
+
+    - name: Build
+      run: make libfreetype.a
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: static-build-kos-freetype
+        path: ./contrib/sdk/sources/freetype/libfreetype.a
+
+  shared-build:
+    name: Shared Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: egor00f/install-kolibrios-toolchain-action@v1.1
+
+    - name: Install newlib
+      run: sudo apt install kos-newlib
+
+    - name: Build
+      run: make freetype.dll
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: shared-build-kos-freetype
+        path: |
+          ./contrib/sdk/sources/freetype/libfreetype.dll.a
+          ./contrib/sdk/sources/freetype/freetype.dll
+
+  pacakage-build:
+    name: Package build
+    runs-on: ubuntu-latest
+
+    needs: [static-build, shared-build]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: egor00f/install-kolibrios-toolchain-action@v1.1
+
+    - name: Install newlib
+      run: sudo apt install kos-newlib
+
+    - name: Build
+      run: make kos-freetype-dev
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-build-kos-freetype
+        path: kos-freetype-dev.deb

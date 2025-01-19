@@ -8,6 +8,6 @@ Priority: optional
 Homepage: https://github.com/Egor00f/kos-freetype
 Origin: http://git.kolibrios.org/KolibriOS/kolibrios
 Maintainer: Egor00f <velikiydolbayeb@gmail.com>
-Installed-Size: 8512
+Installed-Size: 2740
 Description: freetype library for kolibrios
  include and binary files

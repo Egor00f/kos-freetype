@@ -76,17 +76,19 @@ endif
 
 # targets 
 
-all:lib$(LIBRARY).a $(LIBRARY).dll
+all: lib$(LIBRARY).a $(LIBRARY).dll
 
-ebox:lib$(LIBRARY).a $(LIBRARY).dll
+ebox: lib$(LIBRARY).a $(LIBRARY).dll
 
 lib$(LIBRARY).a: $(OBJECTS) Makefile
 	$(AR) cvrs lib$(LIBRARY).a $(OBJECTS)
-	mv -f lib$(LIBRARY).a $(INSTALLDIR)
 
 $(LIBRARY).dll: lib$(LIBRARY).def $(OBJECTS) Makefile
 	$(LD) $(LDFLAGS) -o $@ lib$(LIBRARY).def $(OBJECTS) $(LIBS)
 	$(STRIP) $@
+
+install: lib$(LIBRARY).a $(LIBRARY).dll
+	mv -f lib$(LIBRARY).a $(INSTALLDIR)
 	#sed -f ../newlib/cmd1.sed lib$(LIBRARY).def > mem
 	#sed -f ../newlib/cmd2.sed mem >$(LIBRARY).inc
 	mv -f $@ ../../bin
@@ -98,5 +100,5 @@ $(LIBRARY).dll: lib$(LIBRARY).def $(OBJECTS) Makefile
 
 
 clean: 
-	-rm -f *.o 
+	-rm -f *.o lib$(LIBRARY).a $(LIBRARY).dll
  
